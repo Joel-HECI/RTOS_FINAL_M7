@@ -71,6 +71,7 @@ typedef struct TCB {
  *            FUNCIONES PUBLICAS DEL MODULO H           *
  *******************************************************/
 u16 Task_Init(void);
+u16 Task_IsRegistered(TCB_t *TaskControlBlock);
 u16 Task_Create(TCB_t *TaskControlBlock, TaskFunctionCallback TaskFunction,
                 u8 TaskPriority, u32 TaskPeriodMs, const char *TaskName);
 u16 Task_GetIdByName(const char *TaskName);

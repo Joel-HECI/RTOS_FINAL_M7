@@ -17,6 +17,20 @@ u16 Task_Init(void) {
   return TASK_OK;
 }
 
+u16 Task_IsRegistered(TCB_t *TaskControlBlock) {
+  u16 index;
+
+  if (TaskControlBlock == NULL) {
+    return TASK_ERROR_NULL_PARAM;
+  }
+  for (index = 0; index < TaskCount; index++) {
+    if (TaskRegistry[index] == TaskControlBlock) {
+      return TASK_OK;
+    }
+  }
+  return TASK_ERROR_NOT_FOUND;
+}
+
 u16 Task_Create(TCB_t *TaskControlBlock, TaskFunctionCallback TaskFunction,
                 u8 TaskPriority, u32 TaskPeriodMs, const char *TaskName) {
   u16 index;
@@ -87,6 +101,7 @@ u16 Task_Delete(TCB_t *TaskControlBlock) {
       if (Scheduler_UnregisterTask(TaskControlBlock) != SCHEDULER_OK) {
         return TASK_ERROR_FAIL;
       }
+      Semaphore_OnTaskDelete(TaskControlBlock);
       for (; index + 1u < TaskCount; index++) {
         TaskRegistry[index] = TaskRegistry[index + 1u];
       }
