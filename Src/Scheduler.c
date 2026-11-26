@@ -22,6 +22,7 @@ static List_t PriorityQueueList;
 static ListElement_t PriorityQueueListElements[RTOS_MAX_TASKS_PRIORITIES];
 static QueueElement_t SchedulerQueueElements[RTOS_MAX_TASKS];
 static volatile u32 SchedulerTickCount;
+static TCB_t *SchedulerCurrentTask;
 static u8 SchedulerInitialized;
 
 /***************************************************************
@@ -54,7 +55,9 @@ static u16 Scheduler_DispatchQueue(QueueHandle_t Queue, u32 CurrentTick) {
         (u32)(CurrentTick - task->TaskLastRunMs) >= task->TaskPeriodMs) {
       task->TaskLastRunMs = CurrentTick;
       task->TaskStatus = TASK_RUNNING;
+      SchedulerCurrentTask = task;
       task->TaskFunction();
+      SchedulerCurrentTask = NULL;
       if (task->TaskStatus == TASK_RUNNING) {
         task->TaskStatus = TASK_READY;
       }
@@ -120,12 +123,15 @@ u16 Scheduler_Init(void) {
   SYSTICK_RELOAD = reload;
   SYSTICK_CURRENT = 0;
   SchedulerTickCount = 0;
+  SchedulerCurrentTask = NULL;
   SchedulerInitialized = TRUE;
   SYSTICK_CONTROL = 0x7u;
   return SCHEDULER_OK;
 }
 
 u32 Scheduler_GetTick(void) { return SchedulerTickCount; }
+
+TCB_t *Scheduler_GetCurrentTask(void) { return SchedulerCurrentTask; }
 
 u16 Scheduler_RegisterTask(u8 TaskPriority, pv TaskData) {
   u16 index;

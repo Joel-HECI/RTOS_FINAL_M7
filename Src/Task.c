@@ -84,6 +84,9 @@ u16 Task_Delete(TCB_t *TaskControlBlock) {
   }
   for (index = 0; index < TaskCount; index++) {
     if (TaskRegistry[index] == TaskControlBlock) {
+      if (Semaphore_OnTaskDelete(TaskControlBlock) != SEMAPHORE_OK) {
+        return TASK_ERROR_FAIL;
+      }
       if (Scheduler_UnregisterTask(TaskControlBlock) != SCHEDULER_OK) {
         return TASK_ERROR_FAIL;
       }

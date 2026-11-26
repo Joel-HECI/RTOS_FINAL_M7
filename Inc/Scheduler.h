@@ -1,7 +1,7 @@
 #ifndef _SCHEDULER_H_
 #define _SCHEDULER_H_
 
-#include "AppTypes.h"
+#include "Task.h"
 
 #ifndef SCHEDULER_BASE_ERROR
 #define SCHEDULER_BASE_ERROR 0x000
@@ -17,6 +17,7 @@
 u16 Scheduler_Init(void);
 u16 Shcheduler_Init(void);
 u32 Scheduler_GetTick(void);
+TCB_t *Scheduler_GetCurrentTask(void);
 u16 Scheduler_RegisterTask(u8 TaskPriority, pv TaskData);
 u16 Scheduler_UnregisterTask(pv TaskData);
 void Scheduler_Run(void);

@@ -30,6 +30,7 @@ target_sources(${PROJECT_NAME} PRIVATE
   "${CMAKE_CURRENT_SOURCE_DIR}/Src/List.c"
   "${CMAKE_CURRENT_SOURCE_DIR}/Src/Queue.c"
   "${CMAKE_CURRENT_SOURCE_DIR}/Src/Scheduler.c"
+  "${CMAKE_CURRENT_SOURCE_DIR}/Src/Semaphore.c"
   "${CMAKE_CURRENT_SOURCE_DIR}/Src/Task.c"
   "${CMAKE_CURRENT_SOURCE_DIR}/Src/system_stm32f7xx.c"
 )
